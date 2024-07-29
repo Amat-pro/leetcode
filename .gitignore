@@ -26,3 +26,8 @@ go.work.sum
 .idea
 
 .vscode
+
+
+# Added by cargo
+
+/target
