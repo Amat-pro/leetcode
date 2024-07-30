@@ -35,3 +35,5 @@ func (this *LRUCache) Put(key int, value int)  {
  * obj.Put(key,value);
  */
 ```
+
+# ![](../../images/lc_0146_lru.png)
