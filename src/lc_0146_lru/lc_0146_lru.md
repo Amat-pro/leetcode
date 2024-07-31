@@ -36,4 +36,4 @@ func (this *LRUCache) Put(key int, value int)  {
  */
 ```
 
-# ![](../../images/lc_0146_lru.png)
+# ![思路](../../images/lc_0146_lru.png)
