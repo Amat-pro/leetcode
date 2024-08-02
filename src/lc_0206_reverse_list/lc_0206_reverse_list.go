@@ -37,3 +37,25 @@ func reverseList(head *ListNode) *ListNode {
 	return cur
 
 }
+
+// reverseList_v2
+func reverseList_v2(head *ListNode) *ListNode {
+
+	if head == nil {
+		return head
+	}
+
+	iterNextNode := head
+	var newHead *ListNode
+	var curNode *ListNode
+
+	for iterNextNode != nil {
+		curNode = iterNextNode
+		iterNextNode = iterNextNode.Next
+		curNode.Next = newHead
+		newHead = curNode
+	}
+
+	return newHead
+
+}
