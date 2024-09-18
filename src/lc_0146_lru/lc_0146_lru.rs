@@ -3,7 +3,7 @@ use std::{cell::RefCell, collections::HashMap, rc::Rc};
 pub struct LRUCache {
     capacity: i32,
     len: i32,
-    // 哨兵
+    // 哨兵 - sentinel
     head: Rc<RefCell<Node>>,
     tail: Rc<RefCell<Node>>,
     key_to_node: HashMap<i32, Rc<RefCell<Node>>>,
