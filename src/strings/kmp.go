@@ -13,7 +13,7 @@ func next(s string) []int {
 	next[0] = 0
 
 	j := 0 //j指向前缀的末尾
-	for i := 1; i < l; i++ { // j指向后缀的末尾
+	for i := 1; i < l; i++ { // i指向后缀的末尾
 		for j > 0 && byteS[i] != byteS[j] {
 			j = next[j-1]
 		}
