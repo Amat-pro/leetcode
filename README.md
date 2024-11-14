@@ -1,5 +1,9 @@
 # leetcode
 
+## 其他记录
+[一刷](https://github.com/Amat-pro/cargo_demo/blob/develop/leetcode/index.md)
+
+
 ## 数组
 [dir - array](./src/leetcode_rs/array/array.go)
 
