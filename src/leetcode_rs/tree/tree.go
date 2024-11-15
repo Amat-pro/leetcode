@@ -72,8 +72,8 @@ func levelOrder(root *TreeNode) [][]int {
 
 	// FIFO
 	queue := make([]*TreeNode, 0, 10)
-
 	queue = append(queue, root)
+
 	for len(queue) > 0 {
 
 		level := make([]int, 0, 10)
@@ -379,10 +379,159 @@ func sumOfLeftLeaves(root *TreeNode) int {
 
 }
 
+// findBottomLeftValue 513 - 找树左下角的值 使用层序遍历
+func findBottomLeftValue(root *TreeNode) int {
+	level := make([]*TreeNode, 0, 10)
 
-// TODO 
-// 找树左下角的值
-// 路径总和
-// 最大二叉树
-// 合并两个二叉树
+	result := 0
+	level = append(level, root)
 
+	for len(level) > 0 {
+
+		size := len(level)
+		for i := 0; i < size; i++ {
+			node := level[0]
+			level = level[1:]
+
+			if i == 0 { // 每一层都取第一个，最后一层取到的就是最左下角
+				result = node.Val
+			}
+
+			if node.Left != nil {
+				level = append(level, node.Left)
+			}
+			if node.Right != nil {
+				level = append(level, node.Right)
+			}
+		}
+
+	}
+
+	return result
+
+}
+
+// hasPathSum 112 - 路径总和
+func hasPathSum(root *TreeNode, targetSum int) bool {
+	pathSum := 0
+	result := false
+
+	var order func(node *TreeNode)
+	order = func(node *TreeNode) {
+
+		// 中
+		pathSum += node.Val
+		if node.Left == nil && node.Right == nil {
+			if pathSum == targetSum {
+				result = true
+			}
+			return
+		}
+
+		// 左
+		if node.Left != nil {
+			order(node.Left)
+			pathSum -= node.Left.Val // 回溯
+		}
+
+		// 右
+		if node.Right != nil {
+			order(node.Right)
+			pathSum -= node.Right.Val // 回溯
+		}
+
+	}
+
+	order(root)
+
+	return result
+
+}
+
+// buildTree 106 - 从中序与后序遍历序列构造二叉树 - 必须要有中序！！
+func buildTree(inorder []int, postorder []int) *TreeNode {
+	inOrderIndexMap := map[int]int{}
+	for i, v := range inorder {
+		inOrderIndexMap[v] = i
+	}
+
+	root := reBuild(inorder, postorder, len(postorder)-1, 0, len(inorder)-1, inOrderIndexMap)
+
+	return root
+}
+
+// rebuild .
+// @inorder 中序数组
+// @postorder 后序数组
+// @rootIdxInPostorder 中-中节点的位置，处在postorder的位置
+// @left @right 切分的inorder的范围:[left, right]
+// @inOrderIndexMap inorder数组中item,index的map
+func reBuild(inorder []int, postorder []int, rootIdxInPostorder int, left, right int, inOrderIndexMap map[int]int) *TreeNode {
+	if left > right {
+		return nil
+	}
+
+	if left == right { // 只有一个元素，构建TreeNode并返回
+		return &TreeNode{Val: inorder[left]}
+	}
+
+	// 中节点
+	rootVal := postorder[rootIdxInPostorder]
+	root := &TreeNode{Val: rootVal}
+
+	rootIdxInOrder := inOrderIndexMap[rootVal]
+	// 构建左子树
+	// 左子树root节点在postorder中的位置: 在中序数组中，root的index前边是左子树，左子树的长度是rootIdxInOrder-left，右子树的长度是：right-rootIndexInOrder
+	// 在后序数组[左-右-中]  中节点前边减去右子树的长度后剩下的就是左子树（需要再减1），rootIdxInPostorder - (right-rootIndexInOrder) - 1
+	leftSubTreeRootIndexInPost := rootIdxInPostorder - (right - rootIdxInOrder) - 1
+	root.Left = reBuild(inorder, postorder, leftSubTreeRootIndexInPost, left, rootIdxInOrder-1, inOrderIndexMap)
+	// 构建右子树 右子树root节点在postorder中的位置：rootIdxInPostorder-1
+	rightSubTreeRootIndexInPost := rootIdxInPostorder - 1 // 后序[左右中]：中左边的元素就是右子树的根节点，因为右子树的根节点在右子树中最后出现
+	root.Right = reBuild(inorder, postorder, rightSubTreeRootIndexInPost, rootIdxInOrder+1, right, inOrderIndexMap)
+
+	return root
+
+}
+
+// buildTreeII 105 - 从前序与中序遍历序列构造二叉树
+func buildTreeII(preOrder []int, inOrder []int) *TreeNode {
+	inOrderIndexMap := map[int]int{}
+	for i, v := range inOrder {
+		inOrderIndexMap[v] = i
+	}
+
+	root := rebuildII(preOrder, inOrder, 0, 0, len(inOrder)-1, inOrderIndexMap)
+
+	return root
+}
+
+// rebuildII
+// preOrder
+// inOrder
+// rootIdxInPreOrder
+// leftInOrder, rightInOrder: 切分的中序数组,左闭右闭
+// inOrderIndexMap:中序数组item:idx的map
+func rebuildII(preOrder []int, inOrder []int, rootIdxInPreOrder int, leftInOrder, rightInOrder int, inOrderIndexMap map[int]int) *TreeNode {
+
+	if leftInOrder > rightInOrder {
+		return nil
+	}
+
+	if leftInOrder == rightInOrder {
+		return &TreeNode{Val: inOrder[leftInOrder]}
+	}
+
+	rootVal := preOrder[rootIdxInPreOrder]
+	root := &TreeNode{Val: rootVal}
+
+	rootValIdxInInOrder := inOrderIndexMap[rootVal]
+
+	leftRootIndexInPreOrder := rootIdxInPreOrder + 1
+	root.Left = rebuildII(preOrder, inOrder, leftRootIndexInPreOrder, leftInOrder, rootValIdxInInOrder-1, inOrderIndexMap)
+	// 左子树个数：rootValIdxInInOrder - leftInOrder
+	rightRootIndexInPreOrder := rootIdxInPreOrder + (rootValIdxInInOrder - leftInOrder) + 1 // 前序中根节点+左子树个数+1 = 右子树范围
+	root.Right = rebuildII(preOrder, inOrder, rightRootIndexInPreOrder, rootValIdxInInOrder+1, rightInOrder, inOrderIndexMap)
+
+	return root
+
+}

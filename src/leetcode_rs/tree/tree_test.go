@@ -159,7 +159,6 @@ func Test_isBalanceII(t *testing.T) {
 	fmt.Println("isBalance result is: ", isBalanced(n1)) // false
 }
 
-
 func Test_binaryTreePaths(t *testing.T) {
 	n1 := &TreeNode{Val: 1}
 	n2 := &TreeNode{Val: 2}
@@ -185,4 +184,63 @@ func Test_sumOfLeftLeaves(t *testing.T) {
 	n20.Right = n7
 
 	fmt.Println("sumOfLeftLeaves result is: ", sumOfLeftLeaves(n3)) // 24
+}
+
+func Test_findBottomLeftValue(t *testing.T) {
+	n1 := &TreeNode{Val: 1}
+	n2 := &TreeNode{Val: 2}
+	n3 := &TreeNode{Val: 3}
+	n4 := &TreeNode{Val: 4}
+	n5 := &TreeNode{Val: 5}
+	n6 := &TreeNode{Val: 6}
+	n7 := &TreeNode{Val: 7}
+
+	n1.Left = n2
+	n1.Right = n3
+	n2.Left = n4
+	n3.Left = n5
+	n3.Right = n6
+	n5.Left = n7
+
+	fmt.Println("findBottomLeftValue result is: ", findBottomLeftValue(n1)) // 7
+}
+
+func Test_hasPathSum(t *testing.T) {
+	n5 := &TreeNode{Val: 5}
+	n4 := &TreeNode{Val: 4}
+	n8 := &TreeNode{Val: 8}
+	n11 := &TreeNode{Val: 11}
+	n7 := &TreeNode{Val: 7}
+	n2 := &TreeNode{Val: 2}
+	n13 := &TreeNode{Val: 13}
+	n44 := &TreeNode{Val: 4}
+	n1 := &TreeNode{Val: 1}
+
+	n5.Left = n4
+	n5.Right = n8
+	n4.Left = n11
+	n11.Left = n7
+	n11.Right = n2
+
+	n8.Left = n13
+	n8.Left = n44
+	n44.Right = n1
+
+	fmt.Println("hasPathSum result is: ", hasPathSum(n5, 22)) // true
+}
+
+func Test_buildTree(t *testing.T) {
+	inorder := []int{9, 3, 15, 20, 7}
+	postorder := []int{9, 15, 7, 20, 3}
+
+	root := buildTree(inorder, postorder)
+	fmt.Println("从中序与后序遍历序列构造二叉树，层序遍历结果：", levelOrder(root)) // [[3] [9 20] [15 7]]
+}
+
+func Test_buildTreeII(t *testing.T) {
+	preOrder := []int{3, 9, 20, 15, 7}
+	inOrder := []int{9, 3, 15, 20, 7}
+
+	root := buildTreeII(preOrder, inOrder)
+	fmt.Println("从前序与中序遍历序列构造二叉树，层序遍历结果：", levelOrder(root)) // [[3] [9 20] [15 7]]
 }
