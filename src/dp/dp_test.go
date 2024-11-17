@@ -22,8 +22,8 @@ func Test_bag01(t *testing.T) {
 
 }
 
-// 01背包：  dp[i][j] = max(dp[i−1][j],dp[i−1][j−weights[i−1]]+values[i−1])
-// 完全背包： dp[i][j] = max(dp[i-1][j], dp[i][j-weights[i-1]] + values[i-1])
+// 01背包：  dp[i][j] = max(dp[i−1][j],dp[i−1][j−weights[i−1]]+values[i])
+// 完全背包： dp[i][j] = max(dp[i-1][j], dp[i][j-weights[i-1]] + values[i])
 
 func Test_lc_1143_longestCommonSubsequence(t *testing.T) {
 	text1 := "abcde"

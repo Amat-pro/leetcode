@@ -10,7 +10,7 @@ func bag01(weights []int, values []int, k int) int {
 	// 放物品i: dp[i-1][j-weights[i]] + values[i]
 
 	dp := make([][]int, 0, len(weights))
-	for i := 0; i <= k; i++ {
+	for i := 0; i < len(weights); i++ {
 		dp = append(dp, make([]int, k+1))
 	}
 
@@ -34,14 +34,7 @@ func bag01(weights []int, values []int, k int) int {
 		}
 	}
 
-	maxValue := 0
-	for i := 0; i <= k; i++ {
-		if dp[i][k] > maxValue {
-			maxValue = dp[i][k]
-		}
-	}
-
-	return maxValue
+	return dp[len(weights)-1][k]
 
 }
 
