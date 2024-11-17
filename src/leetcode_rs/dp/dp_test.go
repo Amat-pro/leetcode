@@ -63,3 +63,38 @@ func Test_bag(t *testing.T) {
 	fmt.Println("滚动数组-bag_II result is: ", bag_II(weights, values, k))
 }
 
+func Test_canPartition(t *testing.T) {
+	nums := []int{1, 5, 11, 5}
+	fmt.Println("canPartition result is: ", canPartition(nums)) // true
+}
+
+func Test_lastStoneWeightII(t *testing.T) {
+	stones := []int{2, 7, 4, 1, 8, 1}
+	fmt.Println("lastStoneWeightII result is: ", lastStoneWeightII(stones)) // 1
+}
+
+func Test_findTargetSumWays(t *testing.T) {
+	nums := []int{1, 1, 1, 1, 1}
+	target := 3
+	fmt.Println("findTargetSumWays result is: ", findTargetSumWays(nums, target)) // 5
+}
+
+func Test_change(t *testing.T) {
+	coins := []int{1, 2, 5}
+	amount := 5
+	fmt.Println("零钱兑换II-change result is: ", change(amount, coins)) // 4
+}
+
+func Test_coinChange(t *testing.T) {
+	coins := []int{1, 2, 5}
+	amount := 11
+	fmt.Println("零钱兑换-coinChange result is: ", coinChange(coins, amount)) // 3
+}
+
+func Test_numSquares(t *testing.T) {
+	fmt.Println("numSquares result is: ", numSquares(13)) // 2
+}
+
+func Test_wordBreak(t *testing.T) {
+	fmt.Println("单词拆分 - wordBreak result is: ", wordBreak("applepenapple", []string{"apple", "pen"}))
+}

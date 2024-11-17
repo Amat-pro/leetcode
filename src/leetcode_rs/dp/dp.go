@@ -1,6 +1,9 @@
 package dp
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 // TODO
 
@@ -302,14 +305,239 @@ func bag_II(weights []int, values []int, k int) int {
 	return dp[k]
 }
 
-// 分割等和子集
-// 最后一块石头的重量II
-// 目标和
-// 一和零
-// 零钱兑换II
-// 零钱兑换
-// 完全平方数
-// 单词拆分
+// canPartition 416 - 分割等和子集
+func canPartition(nums []int) bool {
+
+	// 转化为01背包问题
+	// weights=nums
+	// values=nums
+	// k = sum/2
+	// 装容量为k的背包，最大价值是多少? ==> dp[k]==k(装容量为k的背包最大价值为k) =>可以分割为等和子集
+	sum := 0
+	for _, v := range nums {
+		sum += v
+	}
+	if sum%2 != 0 { // 如果sum是奇数，则不可能分割为2个等和子集
+		return false
+	}
+
+	weights := nums
+	values := nums
+	k := sum / 2
+
+	dp := make([]int, k+1)
+	for i := 0; i < len(weights); i++ { // 物品
+		for j := k; j >= weights[i]; j-- { // 背包 从大到小
+			dp[j] = max(dp[j], dp[j-weights[i]]+values[i])
+		}
+	}
+
+	return dp[k] == k
+
+}
+
+// lastStoneWeightII - 1049 - 最后一块石头的重量II
+func lastStoneWeightII(stones []int) int {
+
+	// 其实就是尽量让石头分成重量相同的两堆，相撞之后剩下的石头最小，这样就化解成01背包问题了
+
+	sum := 0
+	for _, v := range stones {
+		sum += v
+	}
+
+	weights := stones
+	values := stones
+	k := sum / 2
+
+	dp := make([]int, k+1)
+	for i := 0; i < len(weights); i++ { // 物品
+		for j := k; j >= weights[i]; j-- { // 背包 从大到小
+			dp[j] = max(dp[j], dp[j-weights[i]]+values[i])
+		}
+	}
+
+	// 两堆石头
+	temp := (sum - dp[k]) - dp[k]
+	if temp >= 0 {
+		return temp
+	}
+
+	return -temp
+
+}
+
+// findTargetSumWays 494 - 目标和
+func findTargetSumWays(nums []int, target int) int {
+
+	// left:正数集合 right:负数集合
+	// left - right = target
+	// left + right = sum
+	// => left-(sum-left) = target => left = (target+sum)/2
+	// 在集合nums中找出和为left的组合
+	// 1. 使用回溯解决
+	// 2. 使用dp解决 => 装满容量为x的背包，有几种方法
+	// dp[i][j]: 使用下标为[0,i]的nums[i]能够凑满j（包括j）这么大容量的包，有dp[i][j]种方法
+	// 不放物品i: 装满j的背包有dp[i-1][j]种方法
+	// 放物品i: 装满j的背包有dp[i-1][j-weights[i]]
+	// dp=dp[i-1][j]+dp[i-1][j-weights[i]]
+
+	sum := 0
+	for _, v := range nums {
+		sum += v
+	}
+	bagSize := (target + sum) / 2
+
+	dp := make([][]int, 0, len(nums))
+	for x := 0; x < len(nums); x++ {
+		temp := make([]int, bagSize+1)
+		dp = append(dp, temp)
+	}
+
+	weights := nums
+
+	// 初始化
+	for i := 0; i < len(nums); i++ {
+		dp[i][0] = 1 // 装满容量为0的背包有1种方法，不放物品i
+	}
+	for j := 1; j <= bagSize; j++ { // j从1开始，j=0在上边已经初始化了
+		if weights[0] == j { // 当物品0重量 == 背包j容量时，装满背包j恰好有一种方法
+			dp[0][j] = 1
+		}
+	}
+
+	//
+	for i := 1; i < len(nums); i++ { // 物品
+		for j := weights[i]; j <= bagSize; j++ { // 背包
+			dp[i][j] = dp[i-1][j] + dp[i-1][j-weights[i]]
+		}
+	}
+
+	return dp[len(nums)-1][bagSize]
+
+}
+
+// findMaxForm 474 - 一和零 TODO
+// func findMaxForm(strs []string, m int, n int) int {
+
+// }
+
+// change 518 - 零钱兑换II - 每一种面额的硬币有无限个
+func change(amount int, coins []int) int {
+
+	// 完全背包问题
+	// 装满amount的背包，有多少种方法
+	// dp[j]: [0,i]物品，装满容量为j的背包，有dp[j]种方法
+	// 放物品i:    dp[j-coins[i]]
+	// 不放物品i:   dp[j]
+	// dp[j] = dp[j-coins[i]] + dp[j]
+	dp := make([]int, amount+1)
+
+	// 初始化
+	dp[0] = 1 // 装满容量为0的背包有一种方法（不放物品i一种方法）
+
+	for i := 0; i < len(coins); i++ {
+		for j := coins[i]; j <= amount; j++ {
+			dp[j] = dp[j-coins[i]] + dp[j]
+		}
+	}
+
+	return dp[amount]
+
+}
+
+// coinChange 322 - 零钱兑换
+func coinChange(coins []int, amount int) int {
+	// 完全背包
+	// 装满容量为amount的背包，最少需要的物品个数
+	// dp[j]: 装满容量为j的背包，最少需要的物品个数为dp[j]
+	// 放物品i: dp[j-coins[i]] + 1
+	// 不放物品i: dp[j]
+	// dp[j] = min(dp[j-coins[i]]+1, dp[j])
+
+	dp := make([]int, amount+1)
+	dp[0] = 0
+	for i := 1; i <= amount; i++ {
+		dp[i] = math.MaxInt
+	}
+
+	for i := 0; i < len(coins); i++ { // 物品
+		for j := coins[i]; j <= amount; j++ { // 背包
+			dp[j] = min(dp[j], dp[j-coins[i]]+1)
+		}
+	}
+
+	if dp[amount] == math.MaxInt {
+		return -1
+	}
+
+	return dp[amount]
+
+}
+
+// numSquares 279 - 完全平方数
+func numSquares(n int) int {
+	// 问题转化为：完全平方数就是物品（可以无限件使用），凑个正整数n就是背包，问凑满这个背包最少有多少物品？
+	// 物品从1到n,[1,n],可以理解为weight是i*i
+
+	dp := make([]int, n+1)
+	dp[0] = 0
+	for i := 1; i <= n; i++ {
+		dp[i] = math.MaxInt
+	}
+
+	for i := 1; i <= n; i++ { // 物品
+		for j := i * i; j <= n; j++ { // 背包
+			dp[j] = min(dp[j], dp[j-i*i]+1)
+		}
+	}
+
+	if dp[n] == math.MaxInt {
+		return -1
+	}
+
+	return dp[n]
+}
+
+// wordBreak - 139 - 单词拆分 - 求排列数 - 先遍历背包再遍历物品
+func wordBreak(s string, wordDict []string) bool {
+
+	// 完全背包 - 求排列数
+	// dp[i]: 长度为i的字符串可以被wordDict中的单词组成为dp[i] (dp[i]=true表示可以组成)
+
+	// 递推公式：
+	// j  i
+	// dp[j] && [j:i)的单词在wordDict中，则dp[i]=true (dp[j]长度为j，再拼接上[j:i))
+
+	// 初始化：
+	// dp[0] = true
+
+	// 截取s,范围[j,i],如果截取的subStr在wordDict中，则认为是物品
+
+	wordDictMap := map[string]bool{}
+	for _, v := range wordDict {
+		wordDictMap[v] = true
+	}
+
+	dp := make([]bool, len(s)+1)
+	dp[0] = true
+
+	for i := 1; i <= len(s); i++ { // 先遍历背包 - 求排列数
+
+		for j := 0; j < i; j++ { // 再遍历物品
+			if dp[j] && wordDictMap[s[j:i]] {
+				dp[i] = true
+				break
+			}
+		}
+	}
+
+	return dp[len(s)]
+
+}
+
+// TODO
+// 组合总和IV - 排列数 - 先遍历背包，再遍历物品
 
 // 12
 // 最长递增子序列
