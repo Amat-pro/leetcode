@@ -539,13 +539,171 @@ func wordBreak(s string, wordDict []string) bool {
 // TODO
 // 组合总和IV - 排列数 - 先遍历背包，再遍历物品
 
-// 12
-// 最长递增子序列
-// 最长连续递增子序列
-// 最长重复子数组
-// 最长公共子序列
+// lengthOfLIS 300 - 最长递增子序列
+func lengthOfLIS(nums []int) int {
+
+	// dp[i]: i之前包括以nums[i]结尾的最长递增子序列的长度为dp[i]
+	// if nums[i] > nums[j] => dp[i] = max(dp[i], dp[j]+1) (j: [0,i))
+	// 初始化：
+	// dp[i] = 1
+	// 求dp[len(nums)-1]
+
+	dp := make([]int, len(nums))
+	for x := 0; x < len(nums); x++ {
+		dp[x] = 1
+	}
+
+	for i := 1; i < len(nums); i++ {
+		for j := 0; j < i; j++ {
+			if nums[i] > nums[j] {
+				dp[i] = max(dp[i], dp[j]+1)
+			}
+		}
+	}
+
+	return dp[len(nums)-1]
+
+}
+
+// findLengthOfLCIS 674 - 最长连续递增子序列
+func findLengthOfLCIS(nums []int) int {
+
+	// dp[i]: 以下标i结尾的连续递增子序列的长度为dp[i]
+	// if nums[i] > nums[i-1] dp[i]=dp[i-1]+1
+	// 初始化: dp[i]=1
+	// 求max(dp[i])
+
+	dp := make([]int, len(nums))
+	for x := 0; x < len(nums); x++ {
+		dp[x] = 1
+	}
+
+	maxLength := 1
+	for i := 1; i < len(nums); i++ {
+		if nums[i] > nums[i-1] {
+			dp[i] = dp[i-1] + 1
+		}
+
+		if dp[i] > maxLength {
+			maxLength = dp[i]
+		}
+
+	}
+
+	return maxLength
+
+}
+
+// maxSubArray 53 -  最大子序和
+func maxSubArray(nums []int) int {
+
+	// dp[i]: [0,i]最大连续子序和为dp[i]
+	// dp[i] = max(dp[i-1]+nums[i],dp[i])
+	// 初始化：dp[i]=nums[i]
+	// 求：max(dp[i])
+
+	maxSum := math.MinInt
+
+	dp := make([]int, len(nums))
+
+	for i := 0; i < len(nums); i++ {
+		dp[i] = nums[i]
+	}
+
+	for i := 1; i < len(nums); i++ {
+		dp[i] = max(dp[i-1]+nums[i], dp[i])
+
+		if dp[i] > maxSum {
+			maxSum = dp[i]
+		}
+	}
+
+	return maxSum
+
+}
+
+// 最大子序和 - 非DP解法
+func maxSubArray_II(nums []int) int {
+	maxSum := math.MinInt
+
+	sum := 0
+	for i := 0; i < len(nums); i++ {
+		sum += nums[i]
+		if sum > maxSum {
+			maxSum = sum
+		}
+
+		if sum < 0 {
+			sum = 0
+		}
+	}
+
+	return maxSum
+
+}
+
+// findLength 718 - 最长重复子数组 TODO (连续！！)
+func findLength(A []int, B []int) int {
+
+	// dp[i][j] ：以下标i - 1为结尾的A，和以下标j - 1为结尾的B，最长重复子数组长度为dp[i][j] （必须包含A[i-1],B[j-1]）
+
+	// 递推公式：
+	// 根据dp[i][j]的定义，dp[i][j]的状态只能由dp[i - 1][j - 1]推导出来。
+	// 即当A[i - 1] 和B[j - 1]相等的时候，dp[i][j] = dp[i - 1][j - 1] + 1;
+	// 根据递推公式可以看出，遍历i 和 j 要从1开始！
+
+	m, n := len(A), len(B)
+	res := 0
+	dp := make([][]int, m+1)
+	for i := 0; i <= m; i++ {
+		dp[i] = make([]int, n+1)
+	}
+
+	for i := 1; i <= m; i++ {
+		for j := 1; j <= n; j++ {
+			if A[i-1] == B[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			}
+			if dp[i][j] > res {
+				res = dp[i][j]
+			}
+		}
+	}
+	return res
+}
+
+// longesCommonSubsequence - 1143 - 最长公共子序列 TODO (非连续！！)
+func longesCommonSubsequence(text1 string, text2 string) int {
+
+	// dp[i][j]：长度为[0, i - 1]的字符串text1与长度为[0, j - 1]的字符串text2的最长公共子序列为dp[i][j] (子序列不连续，所以不需要一定包含A[i-1],B[j-1])
+
+	// 递推公式
+	// 主要就是两大情况： text1[i - 1] 与 text2[j - 1]相同，text1[i - 1] 与 text2[j - 1]不相同
+	// 如果text1[i - 1] 与 text2[j - 1]相同，那么找到了一个公共元素，所以dp[i][j] = dp[i - 1][j - 1] + 1;
+	// 如果text1[i - 1] 与 text2[j - 1]不相同，那就看看text1[0, i - 2]与text2[0, j - 1]的最长公共子序列 和 text1[0, i - 1]与text2[0, j - 2]的最长公共子序列，取最大的。
+	// 即：dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+
+	t1 := len(text1)
+	t2 := len(text2)
+	dp := make([][]int, t1+1)
+	for i := range dp {
+		dp[i] = make([]int, t2+1)
+	}
+
+	for i := 1; i <= t1; i++ {
+		for j := 1; j <= t2; j++ {
+			if text1[i-1] == text2[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			} else {
+				dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+			}
+		}
+	}
+	return dp[t1][t2]
+}
+
+// TODO
 // 不相交的线
-// 最大子序和
 // 判断子序列
 // 不同的子序列
 // 两个字符串的删除操作

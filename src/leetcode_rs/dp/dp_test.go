@@ -98,3 +98,23 @@ func Test_numSquares(t *testing.T) {
 func Test_wordBreak(t *testing.T) {
 	fmt.Println("单词拆分 - wordBreak result is: ", wordBreak("applepenapple", []string{"apple", "pen"}))
 }
+
+func Test_lengthOfLIS(t *testing.T) {
+	nums := []int{10, 9, 2, 5, 3, 7, 101, 18}
+	fmt.Println("最长递增子序列：lengthOfLIS result is: ", lengthOfLIS(nums)) // 4
+}
+
+func Test_findLengthOfLCIS(t *testing.T) {
+	nums := []int{1, 3, 5, 4, 7}
+	fmt.Println("最长连续递增子序列：lengthOfLCIS result is: ", findLengthOfLCIS(nums)) // 3
+}
+
+func Test_maxSubArray(t *testing.T) {
+	nums := []int{-2, 1, -3, 4, -1, 2, 1, -5, 4}
+	fmt.Println("maxSubArray result is: ", maxSubArray(nums))       // 6
+	fmt.Println("maxSubArray_II result is: ", maxSubArray_II(nums)) // 6
+
+	nums1 := []int{5, 4, -1, 7, 8}
+	fmt.Println("maxSubArray result is: ", maxSubArray(nums1))       // 23
+	fmt.Println("maxSubArray_II result is: ", maxSubArray_II(nums1)) // 23
+}
