@@ -34,6 +34,9 @@
 ### 回溯
 [dir - back_tracking](./src/leetcode_rs/back_tracking/back_tracking.go)
 
+### 动态规划
+[dir - DP](./src/leetcode_rs/dp/dp.go)
+
 ### DP - 背包问题
 ```
 
