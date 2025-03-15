@@ -1,0 +1,12 @@
+name: Jira Action
+description: jira action
+inputs:
+  JIRA_BASE_URL:
+    description: description
+    required: true
+
+runs:
+  using: 'go1.x'
+  main: 'main.go'
+  env:
+    JIRA_URL: ${{ inputs.JIRA_BASE_URL }}
