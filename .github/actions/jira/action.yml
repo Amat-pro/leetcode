@@ -6,7 +6,8 @@ inputs:
     required: true
 
 runs:
-  using: 'go1.x'
-  main: 'main.go'
+  using: 'docker'
+  run: |
+    go run main.go
   env:
     JIRA_URL: ${{ inputs.JIRA_BASE_URL }}
