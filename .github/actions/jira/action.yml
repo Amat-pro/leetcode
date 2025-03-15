@@ -6,6 +6,7 @@ inputs:
     required: true
 
 runs:
+  using: docker
   run: |
     go run main.go
   env:
