@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	jiraURL := os.Getenv("JIRA_URL")
+	jiraURL := os.Getenv("JIRA_URL_H")
 	if jiraURL == "" {
 		fmt.Println("JIRA_URL is not set")
 		os.Exit(1)

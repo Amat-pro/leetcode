@@ -1,7 +1,7 @@
 name: Jira Action
 description: jira action
 inputs:
-  JIRA_BASE_URL:
+  JIRA_BASE_URL_H:
     description: description
     required: true
 
@@ -34,8 +34,8 @@ runs:
         go run ./.github/actions/jira/main.go
         
         jira -h
-        jira init
+#        jira init
 
       shell: bash
       env:
-        JIRA_URL: ${{ inputs.JIRA_BASE_URL }}
+        JIRA_URL_H: ${{ inputs.JIRA_BASE_URL_H }}

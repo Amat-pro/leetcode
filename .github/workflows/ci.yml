@@ -17,4 +17,4 @@ jobs:
       - name: Run jira action
         uses: ./.github/actions/jira
         with:
-          JIRA_BASE_URL: 哈哈
+          JIRA_BASE_URL_H: 哈哈
