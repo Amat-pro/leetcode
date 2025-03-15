@@ -18,6 +18,8 @@ runs:
 
     - name: Run Go program
       run: |
+        echo "Current directory:"
+        pwd
         go run main.go
       shell: bash
       env:
