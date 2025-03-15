@@ -8,7 +8,6 @@ inputs:
 outputs:
   TEST_OUTPUTS:
     description: test
-    required: true
 
 runs:
   using: composite
@@ -41,7 +40,7 @@ runs:
         jira -h
 #        jira init
 
-        echo "Generating TEST_OUTPUTS..."
+        echo "Generating test outputs..."
         TEST_OUTPUT="This is a test output"
         echo "::set-output name=TEST_OUTPUTS::$TEST_OUTPUT"
 
