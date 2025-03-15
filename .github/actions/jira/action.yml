@@ -18,7 +18,23 @@ runs:
         echo "Current directory:"
         pwd
         echo go version
+
+        JIRA_URL=''
+        LOGIN=''
+        PASSWORD=''
+        
+        echo "machine $JIRA_URL" > ~/.netrc
+        echo "login $LOGIN" >> ~/.netrc
+        echo "password $PASSWORD" >> ~/.netrc
+        
+        cat ~/.netrc
+        
+        go install github.com/ankitpokhrel/jira-cli/cmd/jira@latest
         go run ./.github/actions/jira/main.go
+        
+        jira -h
+        jira init
+
       shell: bash
       env:
         JIRA_URL: ${{ inputs.JIRA_BASE_URL }}
