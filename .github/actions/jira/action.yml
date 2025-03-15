@@ -6,8 +6,15 @@ inputs:
     required: true
 
 runs:
-  using: docker
-  run: |
-    go run main.go
-  env:
-    JIRA_URL: ${{ inputs.JIRA_BASE_URL }}
+  using: composite
+  steps:
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
+
+    - name: Run Go program
+      run: |
+        go run main.go
+      env:
+        JIRA_URL: ${{ inputs.JIRA_BASE_URL }}
