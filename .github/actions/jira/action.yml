@@ -8,8 +8,8 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+#    - name: Checkout code
+#      uses: actions/checkout@v4
 
     - name: Set up Go
       uses: actions/setup-go@v5
@@ -19,5 +19,6 @@ runs:
     - name: Run Go program
       run: |
         go run main.go
+      shell: bash
       env:
         JIRA_URL: ${{ inputs.JIRA_BASE_URL }}
