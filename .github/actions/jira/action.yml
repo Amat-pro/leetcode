@@ -17,11 +17,12 @@ runs:
       run: |
         echo "Current directory:"
         pwd
-        echo go version
+        
+        go version
 
-        JIRA_URL=''
-        LOGIN=''
-        PASSWORD=''
+        JIRA_URL='url'
+        LOGIN='login'
+        PASSWORD='pass'
         
         echo "machine $JIRA_URL" > ~/.netrc
         echo "login $LOGIN" >> ~/.netrc
