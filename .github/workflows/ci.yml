@@ -22,5 +22,5 @@ jobs:
 
       - name: Print output
         run: |
-          echo "The generated TEST_OUTPUTS is: ${{ steps.run-jira-action.outputs.TEST_OUTPUTS }}"
+          echo "The generated TEST_OUTPUTS is: $TEST_OUTPUTS"
         shell: bash

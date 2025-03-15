@@ -5,10 +5,6 @@ inputs:
     description: description
     required: true
 
-outputs:
-  TEST_OUTPUTS:
-    description: test
-
 runs:
   using: composite
   steps:
@@ -39,7 +35,7 @@ runs:
 
         echo "Generating test outputs..."
         TEST_OUTPUT="This is a test output"
-        echo "::set-output name=TEST_OUTPUTS::$TEST_OUTPUT"
+        echo "TEST_OUTPUTS=$TEST_OUTPUT" >> $GITHUB_ENV
 
 #        jira -h
 #        jira init
