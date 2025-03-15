@@ -14,13 +14,13 @@ runs:
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
-        go-version-file: 'go.mod'
+        go-version-file: './.github/go.mod'
 
     - name: Run Go program
       run: |
         echo "Current directory:"
         pwd
-        go run main.go
+        go run ./.github/actions/jira/main.go
       shell: bash
       env:
         JIRA_URL: ${{ inputs.JIRA_BASE_URL }}
