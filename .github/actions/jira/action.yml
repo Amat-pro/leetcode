@@ -36,13 +36,13 @@ runs:
         
         go install github.com/ankitpokhrel/jira-cli/cmd/jira@latest
         go run ./.github/actions/jira/main.go
-        
-        jira -h
-#        jira init
 
         echo "Generating test outputs..."
         TEST_OUTPUT="This is a test output"
         echo "::set-output name=TEST_OUTPUTS::$TEST_OUTPUT"
+
+#        jira -h
+#        jira init
 
       shell: bash
       env:
