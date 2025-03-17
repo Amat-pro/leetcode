@@ -40,7 +40,6 @@ runs:
           -v $GITHUB_WORKSPACE:/go/src/git.tongdiaotech.com/user/repo \
           -v /var/run/docker.sock:/var/run/docker.sock \
           -w /go/src/git.tongdiaotech.com/user/repo \
-          -e GITEA_TOKEN=${{ secrets.INTRANET_TOKEN }}  \
           golang:alpine /bin/sh -c "pwd && ls -al /go/src/git.tongdiaotech.com/user/repo"
 
     - name: Run Go program
