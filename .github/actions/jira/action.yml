@@ -18,6 +18,7 @@ runs:
         echo "echo pwd ..."
         pwd
         echo "The checkout directory is $GITHUB_WORKSPACE"
+      shell: bash
 
     - name: Run Go program
       run: |
