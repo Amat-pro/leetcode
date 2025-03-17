@@ -28,6 +28,7 @@ runs:
         -v $GITHUB_WORKSPACE:/workspace \
         -w /workspace \
         golang:latest bash -c "pwd && ls -al"
+      shell: bash
 
     - name: Run Go program
       run: |
