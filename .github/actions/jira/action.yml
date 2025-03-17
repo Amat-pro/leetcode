@@ -20,6 +20,15 @@ runs:
         echo "The checkout directory is $GITHUB_WORKSPACE"
       shell: bash
 
+    - name: Run docker
+      run: |
+        pwd
+        ls -al
+        docker run --rm \
+        -v $GITHUB_WORKSPACE:/workspace \
+        -w /workspace \
+        golang:latest bash -c "pwd && ls -al"
+
     - name: Run Go program
       run: |
         echo "Current directory:"
