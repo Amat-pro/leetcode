@@ -13,6 +13,12 @@ runs:
       with:
         go-version-file: './.github/go.mod'
 
+    - name: Run dir
+      run: |
+        echo "echo pwd ..."
+        pwd
+        echo "The checkout directory is $GITHUB_WORKSPACE"
+
     - name: Run Go program
       run: |
         echo "Current directory:"
