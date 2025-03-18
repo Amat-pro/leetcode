@@ -1,0 +1,21 @@
+name: CI with multiple jobs
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run jira action
+        id: run-jira-action
+        uses: ./.github/actions/jira
+        with:
+          JIRA_BASE_URL_H: 哈哈
