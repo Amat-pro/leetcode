@@ -6,69 +6,10 @@ inputs:
     required: true
 
 runs:
-  using: composite
-  steps:
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version-file: './.github/go.mod'
-
-    - name: Run dir
-      run: |
-        echo "echo pwd ..."
-        pwd
-        echo "The checkout directory is $GITHUB_WORKSPACE"
-      shell: bash
-
-    - name: Run docker
-      run: |
-        pwd
-        ls -al
-        docker run --rm \
-        -v $GITHUB_WORKSPACE:/workspace \
-        -w /workspace \
-        golang:latest bash -c "pwd && ls -al"
-      shell: bash
-
-    - name: Run docker
-      shell: bash
-      run: |
-        echo 'docker run ...'
-        echo "$(pwd)"
-        ls -al
-        docker run --rm \
-          -v $GITHUB_WORKSPACE:/go/src/git.tongdiaotech.com/user/repo \
-          -v /var/run/docker.sock:/var/run/docker.sock \
-          -w /go/src/git.tongdiaotech.com/user/repo \
-          golang:alpine /bin/sh -c "pwd && ls -al /go/src/git.tongdiaotech.com/user/repo"
-
-    - name: Run Go program
-      run: |
-        echo "Current directory:"
-        pwd
-        
-        go version
-
-        JIRA_URL='url'
-        LOGIN='login'
-        PASSWORD='pass'
-        
-        echo "machine $JIRA_URL" > ~/.netrc
-        echo "login $LOGIN" >> ~/.netrc
-        echo "password $PASSWORD" >> ~/.netrc
-        
-        cat ~/.netrc
-        
-        go install github.com/ankitpokhrel/jira-cli/cmd/jira@latest
-        go run ./.github/actions/jira/main.go
-
-        echo "Generating test outputs..."
-        TEST_OUTPUT="This is a test output"
-        echo "TEST_OUTPUTS=$TEST_OUTPUT" >> $GITHUB_ENV
-
-#        jira -h
-#        jira init
-
-      shell: bash
-      env:
-        JIRA_URL_H: ${{ inputs.JIRA_BASE_URL_H }}
+  using: 'docker'
+  image: 'golang:alpine'
+  env:
+    JIRA_API_TOKEN: ${{ inputs.JIRA_TOKEN }}
+  entrypoint: ["/bin/sh", "-c"]
+  args:
+    - 'pwd && ls -l'
