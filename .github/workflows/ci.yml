@@ -14,6 +14,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Run docker
+        run: |
+          pwd
+          ls -al
+          docker run --rm \
+          -v $GITHUB_WORKSPACE:/workspace \
+          -w /workspace \
+          golang:latest bash -c "pwd && ls -al"
+        shell: bash
+
       - name: Run jira action
         id: run-jira-action
         uses: ./.github/actions/jira
