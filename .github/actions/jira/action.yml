@@ -12,4 +12,4 @@ runs:
     JIRA_API_TOKEN: ${{ inputs.JIRA_TOKEN }}
   entrypoint: ["/bin/sh", "-c"]
   args:
-    - 'pwd && ls -l'
+    - 'pwd && ls -l && echo "哈哈哈哈"'
