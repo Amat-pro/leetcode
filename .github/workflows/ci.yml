@@ -23,14 +23,3 @@ jobs:
           -w /workspace \
           golang:latest bash -c "pwd && ls -al"
         shell: bash
-
-      - name: Run jira action
-        id: run-jira-action
-        uses: ./.github/actions/jira
-        with:
-          JIRA_BASE_URL_H: 哈哈
-
-      - name: Print output
-        run: |
-          echo "The generated TEST_OUTPUTS is: $TEST_OUTPUTS"
-        shell: bash
