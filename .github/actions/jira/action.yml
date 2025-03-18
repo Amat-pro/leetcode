@@ -8,6 +8,7 @@ inputs:
 runs:
   using: 'docker'
   image: 'golang:alpine'
-  entrypoint: "/bin/sh -c"
   args:
+    - '/bin/sh'
+    - '-c'
     - 'pwd && ls -l && echo "哈哈哈哈"'
