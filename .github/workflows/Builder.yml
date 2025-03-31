@@ -1,8 +1,5 @@
 name: Builder
 on:
-  push:
-    branches:
-      - "**"
   pull_request:
     types: [opened, reopened]
 jobs:
@@ -14,3 +11,5 @@ jobs:
       - name: builder
         run: |
           echo 'builder ...'
+          sleep 30
+          echo 'builder done ...'
