@@ -1,7 +1,7 @@
 name: Jira
 on:
   workflow_run:
-    workflows: [Builder]
+    workflows: [Builder, Builder-Second]
     types:
       - completed
 jobs:
