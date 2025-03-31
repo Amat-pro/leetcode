@@ -11,3 +11,8 @@ jobs:
       - name: jira
         run: |
           echo 'jira ...'
+          echo "Triggered by workflow: ${{ github.event.workflow_run.workflow.name }}"
+          echo "Conclusion of the workflow: ${{ github.event.workflow_run.conclusion }}"
+          echo "Status of the workflow: ${{ github.event.workflow_run.status }}"
+          echo "Head branch (from which the workflow was run): ${{ github.event.workflow_run.head_branch }}"
+          echo "github.event.pull_request.title: ${{ github.event.pull_request.title }}"
