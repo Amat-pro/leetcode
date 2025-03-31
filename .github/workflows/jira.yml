@@ -1,0 +1,13 @@
+name: Jira
+on:
+  workflow_run:
+    workflows: [Builder]
+    types:
+      - completed
+jobs:
+  jira:
+    runs-on: ubuntu-latest
+    steps:
+      - name: jira
+        run: |
+          echo 'jira ...'
