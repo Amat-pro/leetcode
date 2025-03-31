@@ -1,0 +1,16 @@
+name: Builder
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    types: [opened, reopened]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: builder
+        run: |
+          echo 'builder ...'
